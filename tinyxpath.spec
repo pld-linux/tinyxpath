@@ -1,3 +1,4 @@
+%bcond_without	tests
 Summary:	Small XPath syntax decoder
 Name:		tinyxpath
 Version:	1.3.1
@@ -53,13 +54,14 @@ sed -i 's/\r$//' AUTHORS
 %{__make}
 
 # Not really designed to be build as lib, DYI
-g++ $RPM_OPT_FLAGS -shared -o lib%{name}.so.0.1 \
+%{__cxx} $RPM_OPT_FLAGS -shared -o lib%{name}.so.0.1 \
    -Wl,-soname,lib%{name}.so.0.1 `ls *.o | grep -v main.o` -ltinyxml
 
 
-%check
+%if %{with tests}
 ./tinyxpath
 grep -q '<em>' out.htm && false
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -88,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS
-%attr(755,root,root) %{_libdir}/lib%{name}.so.0
+%attr(755,root,root) %ghost %{_libdir}/lib%{name}.so.0
 %attr(755,root,root) %{_libdir}/lib%{name}.so.0.*
 
 %files devel

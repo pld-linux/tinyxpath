@@ -35,8 +35,8 @@ developing applications that use %{name}.
 
 %prep
 %setup -q -c %{name}-%{version}
-%patch0
-%patch1
+%patch -P0
+%patch -P1
 rm -rf tinyxml* tinystr*
 
 # Correct some errors due to bundled tinyxml
